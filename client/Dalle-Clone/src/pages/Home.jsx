@@ -2,8 +2,10 @@ import React, { useState, useEffect } from 'react'
 import { Loader, Card, FormField } from '../components';
 
 const Home = () => {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [allPosts, setAllPosts] = useState(null);
+  const [searchText, setSearchText] = useState('adasda');
+
   return (
     <section className='max-w-7x1 mx-auto'>
       <div>
@@ -27,7 +29,12 @@ const Home = () => {
           </div>
         ) : (
           <>
-
+            {searchText && (
+              <h2 className='font-medium text-[666e75] text-xl mb-3'>
+                Showing results for <span className='text-[222328]'>{searchText}
+                </span>
+              </h2>
+            )}
           </>
         )}
 
