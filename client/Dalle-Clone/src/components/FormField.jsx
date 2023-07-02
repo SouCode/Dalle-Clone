@@ -34,6 +34,7 @@ const FormField = ({ LabelName, type, name, placeholder,
         text-sm rounded-lg focus:ring-[#4649ff] foxus:border-[4649ff] 
         outline-none block w-full p-3'
       />
+      
     </div>
   );
 }
