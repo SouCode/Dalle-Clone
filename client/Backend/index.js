@@ -1,9 +1,19 @@
 const express = require('express');
+const cors = require('cors');
 const connectDB = require('./mongodb/connect.js');
+const postRoutes = require('./routes/postRoutes.js');
+const dalleRoutes = require('./routes/dalleRoutes.js');
+
 require('dotenv').config();
 
 const app = express();
+
+app.use(cors());
 app.use(express.json());
+app.use('/api/v1/post', postRoutes);
+app.use('/api/v1/dalle', dalleRoutes);
+
+
 
 app.get('/', async (req, res) => {
   res.send('Hello from DALL-E Clone');
