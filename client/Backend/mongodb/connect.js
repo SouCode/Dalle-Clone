@@ -1,12 +1,20 @@
-import mongoose from "mongoose";
+const mongoose = require('mongoose');
 
-const connectDB= (url) => {
-    mongoose.set('strictQuery', true);
+const connectDB = async () => {
+  try {
+    const url = process.env.MONGODB_URL;
+    if (!url) {
+      throw new Error('MongoDB connection URL is missing');
+    }
+    await mongoose.connect(url, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
+    console.log('MongoDB connected...');
+  } catch (error) {
+    console.log(error.message);
+    process.exit(1);
+  }
+};
 
-
-    mongoose.connect(url)
-        .then(() => console.log('MongoDB connected'))
-        .catch((err) => console.log(err));
-}
-
-export default connectDB();
+module.exports = connectDB;
