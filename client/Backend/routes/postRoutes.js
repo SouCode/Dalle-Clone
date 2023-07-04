@@ -1,6 +1,7 @@
 const express = require('express');
 const cloudinary = require('cloudinary').v2;
 const Post = require('../mongodb/models/post.js');
+require('dotenv').config();
 
 const router = express.Router();
 
