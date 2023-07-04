@@ -1,3 +1,4 @@
+// Backend/routes/dalleRoutes.js
 const express = require('express');
 const router = express.Router();
 const { Configuration, OpenAIApi } = require('openai');
@@ -9,7 +10,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-router.route('/').get(async (req, res) => {
+router.post('/', async (req, res) => {
   try {
     const { prompt } = req.body;
     const aiResponse = await openai.createImage({

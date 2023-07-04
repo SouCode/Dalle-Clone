@@ -1,3 +1,4 @@
+// Backend/index.js
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./mongodb/connect.js');
@@ -12,8 +13,6 @@ app.use(cors());
 app.use(express.json());
 app.use('/api/v1/post', postRoutes);
 app.use('/api/v1/dalle', dalleRoutes);
-
-
 
 app.get('/', async (req, res) => {
   res.send('Hello from DALL-E Clone');
