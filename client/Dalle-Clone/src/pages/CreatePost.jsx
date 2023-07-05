@@ -4,7 +4,11 @@ import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
 
+
+
 const CreatePost = () => {
+  const navigate = useNavigate(); // Declare this here
+
   const [form, setForm] = useState({
     name: '',
     prompt: '',
@@ -44,10 +48,37 @@ const CreatePost = () => {
   };
 
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Add your logic here for handling form submission
+    setLoading(true);
+  
+    if (form.prompt && form.photo) {
+      try {
+        const response = await fetch('http://localhost:8080/api/v1/post/create', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(form)  // Send the whole form data, including the base64 photo
+        });
+  
+        if (response.ok) {
+          navigate('/');
+        } else {
+          throw new Error('Failed to post data');
+        }
+      } catch (error) {
+        alert(error.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert('Please enter a prompt and generate an image');
+    }
   };
+  
+  
+  
 
   const handleChange = (e) => {
     setForm({ ...form, [e.target.name]: e.target.value})
