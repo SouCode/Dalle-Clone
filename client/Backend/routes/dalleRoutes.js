@@ -1,19 +1,16 @@
-// Backend/routes/dalleRoutes.js
 const express = require('express');
 const router = express.Router();
 const { Configuration, OpenAIApi } = require('openai');
 
 require('dotenv').config();
 
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
-
-// t
 router.post('/', async (req, res) => {
   try {
-    const { prompt } = req.body;
+    const { prompt, apiKey } = req.body;
+    const configuration = new Configuration({
+      apiKey: apiKey || process.env.OPENAI_API_KEY,
+    });
+    const openai = new OpenAIApi(configuration);
     const aiResponse = await openai.createImage({
       prompt,
       n: 1,
@@ -24,7 +21,7 @@ router.post('/', async (req, res) => {
     res.status(200).json({ photo: image });
   } catch (error) {
     console.log(error);
-    res.status(500).send(error?.response.data.error.message);
+    res.status(500).send(error?.response?.data?.error?.message);
   }
 });
 
