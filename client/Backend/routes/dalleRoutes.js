@@ -10,6 +10,7 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+// t
 router.post('/', async (req, res) => {
   try {
     const { prompt } = req.body;
