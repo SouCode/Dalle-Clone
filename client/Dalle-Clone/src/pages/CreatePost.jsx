@@ -4,21 +4,19 @@ import { preview } from '../assets';
 import { getRandomPrompt } from '../utils';
 import { FormField, Loader } from '../components';
 
-
-
 const CreatePost = () => {
-  const navigate = useNavigate(); // Declare this here
-
+  const navigate = useNavigate();
   const [form, setForm] = useState({
     name: '',
     prompt: '',
     photo: '',
+    apiKey: '',
   });
   const [generatingImg, setGeneratingImg] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const generateImage = async () => {
-    if (form.prompt) {
+    if (form.prompt && form.apiKey) {
       try {
         setGeneratingImg(true);
         const response = await fetch('http://localhost:8080/api/v1/dalle', {
@@ -26,9 +24,8 @@ const CreatePost = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ prompt: form.prompt }),
+          body: JSON.stringify({ prompt: form.prompt, apiKey: form.apiKey }),
         });
-
 
         if (!response.ok) {
           throw new Error('Failed to generate image');
@@ -43,25 +40,24 @@ const CreatePost = () => {
         setGeneratingImg(false);
       }
     } else {
-      alert('Please enter a prompt');
+      alert('Please enter a prompt and API key');
     }
   };
-
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-  
-    if (form.prompt && form.photo) {
+
+    if (form.prompt && form.photo && form.apiKey) {
       try {
         const response = await fetch('http://localhost:8080/api/v1/post/create', {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify(form)  // Send the whole form data, including the base64 photo
+          body: JSON.stringify(form),
         });
-  
+
         if (response.ok) {
           navigate('/');
         } else {
@@ -73,20 +69,17 @@ const CreatePost = () => {
         setLoading(false);
       }
     } else {
-      alert('Please enter a prompt and generate an image');
+      alert('Please enter a prompt, generate an image, and provide an API key');
     }
   };
-  
-  
-  
 
   const handleChange = (e) => {
-    setForm({ ...form, [e.target.name]: e.target.value})
-  }
+    setForm({ ...form, [e.target.name]: e.target.value });
+  };
 
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompts);
-    setForm({ ...form, prompt: randomPrompt})
+    setForm({ ...form, prompt: randomPrompt });
   };
 
   return (
@@ -120,6 +113,15 @@ const CreatePost = () => {
             handleChange={handleChange}
             isSurpriseMe
             handleSurpriseMe={handleSurpriseMe}
+          />
+
+          <FormField
+            LabelName="OpenAI API Key"
+            type="text"
+            name="apiKey"
+            placeholder="Enter your OpenAI API key"
+            value={form.apiKey}
+            handleChange={handleChange}
           />
         
           <div className=' relative bg-gray-50 border border-gray-300 text-gray-900 text-sm
@@ -170,10 +172,7 @@ const CreatePost = () => {
           >
             {loading ? 'Sharing...' : 'Share with the community'}
           </button>
-
-              
         </div>
-
       </form>
     </section>
   );
