@@ -4,7 +4,7 @@ Luminae is a web application that utilizes the power of AI to generate unique an
 
 ## Demo
 
-You can try out Luminae by visiting the [live demo](https://your-website-url.com).
+You can try out Luminae by visiting the [Live Site](http://luminae.tech/).
 
 ## Getting Started
 
